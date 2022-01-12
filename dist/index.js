@@ -104,7 +104,7 @@ function get_tags(repository) {
         // Get digest from manifest
         response = yield node_fetch_1.default(`https://hub.docker.com/v2/repositories/${repository}/tags`, { headers: auth_header });
         if (!response.ok) {
-            throw new Error('No matching repository found.');
+            throw new Error(`No matching repository found. ${response.status}: ${response.statusText}`);
         }
         return yield response.json();
     });

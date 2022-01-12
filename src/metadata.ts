@@ -39,7 +39,9 @@ export async function get_tags(repository: string): Promise<MetadataObject> {
     {headers: auth_header}
   )
   if (!response.ok) {
-    throw new Error('No matching repository found.')
+    throw new Error(
+      `No matching repository found. ${response.status}: ${response.statusText}`
+    )
   }
 
   return await response.json()
