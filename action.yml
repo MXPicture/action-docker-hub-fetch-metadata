@@ -1,0 +1,18 @@
+name: 'Docker Hub Fetch Image Tags'
+description: 'Get Tags of a Docker image hosted on DockerHub'
+author: 'Tobias Bildner'
+inputs:
+  repository:
+    required: true
+    description: 'DockerHub repository name (e.g. myuser/myrepo)'
+outputs:
+    results:
+      description: 'Docker image tags in JSON format'
+    count:
+      description: 'Tag count'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: download-cloud
+  color: blue

@@ -1,2 +1,2 @@
-# action-docker-hub-fetch-metadata
-Github Action: Fetch Metadata from DockerHub
+# action-docker-hub-fetch-tags
+Github Action: Fetch Tags from DockerHub

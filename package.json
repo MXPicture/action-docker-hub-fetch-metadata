@@ -1,0 +1,44 @@
+{
+  "name": "action-docker-hub-fetch-tags",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Get Tags of a Docker image hosted on DockerHub",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map",
+    "test": "jest",
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MXPicture/action-docker-hub-fetch-tags.git"
+  },
+  "keywords": [
+    "actions"
+  ],
+  "author": "Tobias Bildner",
+  "license": "BSD",
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
+    "@types/node-fetch": "^2.5.12",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "@vercel/ncc": "^0.29.0",
+    "eslint": "^7.31.0",
+    "eslint-plugin-github": "^4.1.1",
+    "eslint-plugin-jest": "^24.3.6",
+    "jest": "^27.0.6",
+    "js-yaml": "^4.1.0",
+    "prettier": "2.2.1",
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.1.3"
+  }
+}
