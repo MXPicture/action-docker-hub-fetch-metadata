@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Fetch tags from DockerHub
         id: fetch_tags
-        uses: mxpicture/action-docker-hub-fetch-tags@v1
+        uses: mxpicture/action-docker-hub-fetch-tags@v1.0.2
         with:
           repository: owner/repo
 
