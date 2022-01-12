@@ -60,25 +60,6 @@ run();
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -88,21 +69,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.get_tags = void 0;
-const node_fetch_1 = __importStar(__nccwpck_require__(467));
+const node_fetch_1 = __importDefault(__nccwpck_require__(467));
 function get_tags(repository) {
     return __awaiter(this, void 0, void 0, function* () {
-        let response;
-        // Generate header using pull token
-        response = yield node_fetch_1.default(`https://auth.docker.io/token?service=registry.docker.io&scope=repository:${repository}:pull`);
-        const response_json = yield response.json();
-        const auth_header = new node_fetch_1.Headers({
-            Authorization: `Bearer ${response_json.token}`,
-            Accept: 'application/vnd.docker.distribution.manifest.v2+json'
-        });
-        // Get digest from manifest
-        response = yield node_fetch_1.default(`https://hub.docker.com/v2/repositories/${repository}/tags`, { headers: auth_header });
+        const response = yield node_fetch_1.default(`https://hub.docker.com/v2/repositories/${repository}/tags`);
         if (!response.ok) {
             throw new Error(`No matching repository found. ${response.status}: ${response.statusText}`);
         }
