@@ -5,6 +5,9 @@ inputs:
   repository:
     required: true
     description: 'DockerHub repository name (e.g. myuser/myrepo)'
+  max_items:
+    required: false
+    description: 'Read max ... Items (default 999)'
 outputs:
     results:
       description: 'Docker image tags in JSON format'

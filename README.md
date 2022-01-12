@@ -20,9 +20,10 @@ jobs:
     steps:
       - name: Fetch tags from DockerHub
         id: fetch_tags
-        uses: mxpicture/action-docker-hub-fetch-tags@v1.0.2
+        uses: mxpicture/action-docker-hub-fetch-tags@v1.0.3
         with:
           repository: owner/repo
+          max_items: '100'
 
       - name: An example step
         run: |

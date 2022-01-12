@@ -1,4 +1,4 @@
-import {default as fetch, Headers} from 'node-fetch'
+import {default as fetch} from 'node-fetch'
 
 interface ResultObject {
   creator: number
@@ -20,9 +20,12 @@ interface MetadataObject {
   results: ResultObject[]
 }
 
-export async function get_tags(repository: string): Promise<MetadataObject> {
+export async function get_tags(
+  repository: string,
+  max_items: string
+): Promise<MetadataObject> {
   const response = await fetch(
-    `https://hub.docker.com/v2/repositories/${repository}/tags`
+    `https://hub.docker.com/v2/repositories/${repository}/tags?page_size=${max_items}`
   )
 
   if (!response.ok) {

@@ -41,7 +41,11 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const repository = core.getInput('repository');
-            const metadata = yield metadata_1.get_tags(repository);
+            let max_items = core.getInput('max_items');
+            if (!max_items) {
+                max_items = '999';
+            }
+            const metadata = yield metadata_1.get_tags(repository, max_items);
             core.setOutput('count', metadata.count);
             core.setOutput('results', metadata.results);
         }
@@ -75,9 +79,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.get_tags = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(467));
-function get_tags(repository) {
+function get_tags(repository, max_items) {
     return __awaiter(this, void 0, void 0, function* () {
-        const response = yield node_fetch_1.default(`https://hub.docker.com/v2/repositories/${repository}/tags`);
+        const response = yield node_fetch_1.default(`https://hub.docker.com/v2/repositories/${repository}/tags?page_size=${max_items}`);
         if (!response.ok) {
             throw new Error(`No matching repository found. ${response.status}: ${response.statusText}`);
         }

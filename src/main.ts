@@ -4,7 +4,13 @@ import {get_tags} from './metadata'
 async function run(): Promise<void> {
   try {
     const repository: string = core.getInput('repository')
-    const metadata = await get_tags(repository)
+    let max_items: string = core.getInput('max_items')
+
+    if (!max_items) {
+      max_items = '999'
+    }
+
+    const metadata = await get_tags(repository, max_items)
     core.setOutput('count', metadata.count)
     core.setOutput('results', metadata.results)
   } catch (error) {
