@@ -1,6 +1,6 @@
 {
   "name": "action-docker-hub-fetch-tags",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Get Tags of a Docker image hosted on DockerHub",
   "main": "lib/main.js",
