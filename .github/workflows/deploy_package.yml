@@ -32,19 +32,19 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v${{ steps.split.outputs._1 }}"
+          automatic_release_tag: "v${{ steps.split.outputs._0 }}"
           prerelease: false
       
       - name: create release and tag (v*.*)
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v${{ steps.split.outputs._1 }}.${{ steps.split.outputs._2 }}"
+          automatic_release_tag: "v${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}"
           prerelease: false
 
       - name: create release and tag (v*.*.*)
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v${{ steps.split.outputs._1 }}.${{ steps.split.outputs._2 }}.${{ steps.split.outputs._3 }}"
+          automatic_release_tag: "v${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}.${{ steps.split.outputs._2 }}"
           prerelease: false
