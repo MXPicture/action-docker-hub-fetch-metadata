@@ -1,6 +1,4 @@
-# action-docker-hub-fetch-tags
-
-Github Action: Fetch Tags from DockerHub
+# Github Action: Fetch Tags from DockerHub
 
 ## Example
 
@@ -20,12 +18,16 @@ jobs:
     steps:
       - name: Fetch tags from DockerHub
         id: fetch_tags
-        uses: mxpicture/action-docker-hub-fetch-tags@v1.0.3
+        uses: mxpicture/action-docker-hub-fetch-tags@v1
         with:
           repository: owner/repo
           max_items: '100'
 
       - name: An example step
         run: |
-          echo '${{ steps.fetch_tags_.outputs.count }}'
+          echo '${{ steps.fetch_tags.outputs.count }}'
+
+      - name: An example step
+        run: |
+          echo '${{ steps.fetch_tags.outputs.results }}'
 ```

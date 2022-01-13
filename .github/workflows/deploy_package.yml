@@ -1,0 +1,50 @@
+name: Deploy
+
+on:
+  workflow_call:
+
+  workflow_dispatch:
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: get version/tag from package.json
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with: 
+            path: 'package.json'
+            prop_path: 'version'
+
+      - name: show version
+        run: echo ${{ steps.version.outputs.prop }}
+
+      - name: split version
+        uses: jungwinter/split@v2
+        id: split
+        with:
+          msg: ${{ steps.version.outputs.prop }}
+          separator: "."
+
+      - name: create release and tag (v*)
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.ACCESS_TOKEN }}"
+          automatic_release_tag: "v${{ steps.split.outputs._1 }}"
+          prerelease: false
+      
+      - name: create release and tag (v*.*)
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.ACCESS_TOKEN }}"
+          automatic_release_tag: "v${{ steps.split.outputs._1 }}.${{ steps.split.outputs._2 }}"
+          prerelease: false
+
+      - name: create release and tag (v*.*.*)
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.ACCESS_TOKEN }}"
+          automatic_release_tag: "v${{ steps.split.outputs._1 }}.${{ steps.split.outputs._2 }}.${{ steps.split.outputs._3 }}"
+          prerelease: false
