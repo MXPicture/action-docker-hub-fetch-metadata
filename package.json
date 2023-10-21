@@ -1,6 +1,6 @@
 {
   "name": "action-docker-hub-fetch-tags",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "private": true,
   "description": "Get Tags of a Docker image hosted on DockerHub",
   "main": "lib/main.js",
@@ -11,8 +11,8 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map",
     "test": "jest",
-    "all_wo_test": "npm run build && npm run format && npm run lint && npm run package",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all_wo_test": "npm run format && npm run lint && npm run build && npm run package",
+    "all": "npm run all_wo_test && npm test"
   },
   "repository": {
     "type": "git",
