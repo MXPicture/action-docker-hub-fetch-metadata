@@ -1,21 +1,21 @@
-name: 'Docker Hub Fetch Image Tags'
-description: 'Get Tags of a Docker image hosted on DockerHub'
-author: 'Tobias Bildner'
+name: "Docker Hub Fetch Image Tags"
+description: "Get Tags of a Docker image hosted on DockerHub"
+author: "Tobias Bildner"
 inputs:
   repository:
     required: true
-    description: 'DockerHub repository name (e.g. myuser/myrepo)'
+    description: "DockerHub repository name (e.g. myuser/myrepo)"
   max_items:
     required: false
-    description: 'Read max ... Items (default 999)'
+    description: "Read max ... Items (default 999)"
 outputs:
-    results:
-      description: 'Docker image tags in JSON format'
-    count:
-      description: 'Tag count'
+  results:
+    description: "Docker image tags in JSON format"
+  count:
+    description: "Tag count"
 runs:
-  using: 'node18'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
 branding:
   icon: download-cloud
   color: blue
