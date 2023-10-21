@@ -51,10 +51,10 @@ export async function get_tags(
     minor: number | undefined = undefined,
     bug: number | undefined = undefined
   ): string => {
-    if (bug) {
+    if (bug !== undefined) {
       return `v${major}.${minor}.${bug}`
     }
-    if (minor) {
+    if (minor !== undefined) {
       return `v${major}.${minor}`
     }
     return `v${major}`
@@ -70,7 +70,7 @@ export async function get_tags(
         major,
         major_name: buildVersion(major),
         minor,
-        minor_name: buildVersion(minor),
+        minor_name: buildVersion(major, minor),
         bug,
         bug_name: buildVersion(major, minor, bug)
       }
