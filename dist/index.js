@@ -100,10 +100,10 @@ function get_tags(repository, max_items) {
         }
         const result = (yield response.json());
         const buildVersion = (major, minor = undefined, bug = undefined) => {
-            if (bug) {
+            if (bug !== undefined) {
                 return `v${major}.${minor}.${bug}`;
             }
-            if (minor) {
+            if (minor !== undefined) {
                 return `v${major}.${minor}`;
             }
             return `v${major}`;
@@ -114,7 +114,7 @@ function get_tags(repository, max_items) {
                     major,
                     major_name: buildVersion(major),
                     minor,
-                    minor_name: buildVersion(minor),
+                    minor_name: buildVersion(major, minor),
                     bug,
                     bug_name: buildVersion(major, minor, bug)
                 };
