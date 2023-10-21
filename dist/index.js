@@ -52,7 +52,7 @@ function run() {
             const metadata = yield (0, metadata_1.get_tags)(repository, max_items);
             core.setOutput('count', metadata.count);
             core.setOutput('results', metadata.results);
-            core.setOutput('currentVersion', metadata.currentVersion);
+            core.setOutput('current_version', metadata.current_version);
         }
         catch (error) {
             if (error instanceof Error) {
@@ -109,8 +109,8 @@ function get_tags(repository, max_items) {
             return `v${major}`;
         };
         const setResultLastVersion = (major, minor, bug) => {
-            if (!result.currentVersion) {
-                result.currentVersion = {
+            if (!result.current_version) {
+                result.current_version = {
                     major,
                     major_name: buildVersion(major),
                     minor,
@@ -120,32 +120,32 @@ function get_tags(repository, max_items) {
                 };
             }
             else {
-                result.currentVersion.major = major;
-                result.currentVersion.major_name = buildVersion(major);
-                result.currentVersion.minor = minor;
-                result.currentVersion.minor_name = buildVersion(major, minor);
-                result.currentVersion.bug = bug;
-                result.currentVersion.bug_name = buildVersion(major, minor, bug);
+                result.current_version.major = major;
+                result.current_version.major_name = buildVersion(major);
+                result.current_version.minor = minor;
+                result.current_version.minor_name = buildVersion(major, minor);
+                result.current_version.bug = bug;
+                result.current_version.bug_name = buildVersion(major, minor, bug);
             }
         };
         const checkResultLastVersion = (major, minor, bug) => {
-            if (major < result.currentVersion.major)
+            if (major < result.current_version.major)
                 return false;
-            if (major > result.currentVersion.major) {
+            if (major > result.current_version.major) {
                 setResultLastVersion(major, minor, bug);
                 return true;
             }
             // major is equal
-            if (minor < result.currentVersion.minor)
+            if (minor < result.current_version.minor)
                 return false;
-            if (minor > result.currentVersion.minor) {
+            if (minor > result.current_version.minor) {
                 setResultLastVersion(major, minor, bug);
                 return true;
             }
             // minor is equal
-            if (bug < result.currentVersion.bug)
+            if (bug < result.current_version.bug)
                 return false;
-            if (bug > result.currentVersion.bug) {
+            if (bug > result.current_version.bug) {
                 setResultLastVersion(major, minor, bug);
                 return true;
             }
@@ -164,7 +164,7 @@ function get_tags(repository, max_items) {
         return {
             count: result.count,
             results: result.results,
-            currentVersion: result.currentVersion
+            current_version: result.current_version
         };
     });
 }
