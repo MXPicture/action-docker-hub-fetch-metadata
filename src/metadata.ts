@@ -34,5 +34,5 @@ export async function get_tags(
     )
   }
 
-  return await response.json()
+  return (await response.json()) as MetadataObject
 }

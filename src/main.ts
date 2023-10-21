@@ -14,7 +14,13 @@ async function run(): Promise<void> {
     core.setOutput('count', metadata.count)
     core.setOutput('results', metadata.results)
   } catch (error) {
-    core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(error.message)
+    } else if (typeof error === 'string') {
+      core.setFailed(error)
+    } else {
+      core.setFailed('unknown')
+    }
   }
 }
 
