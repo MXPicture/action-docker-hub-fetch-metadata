@@ -52,6 +52,7 @@ function run() {
             const metadata = yield (0, metadata_1.get_tags)(repository, max_items);
             core.setOutput('count', metadata.count);
             core.setOutput('results', metadata.results);
+            core.setOutput('currentVersion', metadata.currentVersion);
         }
         catch (error) {
             if (error instanceof Error) {
