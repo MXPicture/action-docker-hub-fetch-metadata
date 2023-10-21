@@ -13,8 +13,12 @@ outputs:
     description: "Docker image tags in JSON format"
   count:
     description: "Tag count"
-  current_version:
-    description: "Current version"
+  version_bug:
+    description: "Version bug e.g. v1.0.0"
+  version_minor:
+    description: "Version minor e.g. v1.0"
+  version_major:
+    description: "Version major e.g. v1"
 runs:
   using: "node20"
   main: "dist/index.js"
