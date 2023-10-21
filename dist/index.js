@@ -52,7 +52,9 @@ function run() {
             const metadata = yield (0, metadata_1.get_tags)(repository, max_items);
             core.setOutput('count', metadata.count);
             core.setOutput('results', metadata.results);
-            core.setOutput('current_version', metadata.current_version);
+            core.setOutput('version_bug', metadata.current_version.bug_name);
+            core.setOutput('version_minor', metadata.current_version.minor_name);
+            core.setOutput('version_major', metadata.current_version.major_name);
         }
         catch (error) {
             if (error instanceof Error) {
