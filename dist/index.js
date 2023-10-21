@@ -55,6 +55,9 @@ function run() {
             core.setOutput('version_bug', metadata.current_version.bug_name);
             core.setOutput('version_minor', metadata.current_version.minor_name);
             core.setOutput('version_major', metadata.current_version.major_name);
+            core.setOutput('next_version_bug', metadata.next_version.bug_name);
+            core.setOutput('next_version_minor', metadata.next_version.minor_name);
+            core.setOutput('next_version_major', metadata.next_version.major_name);
         }
         catch (error) {
             if (error instanceof Error) {
