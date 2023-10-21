@@ -19,6 +19,12 @@ outputs:
     description: "Version minor e.g. v1.0"
   version_major:
     description: "Version major e.g. v1"
+  next_version_bug:
+    description: "Next version bug e.g. v1.0.0"
+  next_version_minor:
+    description: "Next version minor e.g. v1.0"
+  next_version_major:
+    description: "Next version major e.g. v1"
 runs:
   using: "node20"
   main: "dist/index.js"

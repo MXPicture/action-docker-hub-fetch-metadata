@@ -94,7 +94,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.get_tags = void 0;
 const node_fetch_1 = __importDefault(__nccwpck_require__(1793));
-function get_tags(repository, max_items) {
+// eslint-disable-next-line no-shadow
+var NextVersionType;
+(function (NextVersionType) {
+    NextVersionType["bug"] = "bug";
+    NextVersionType["minor"] = "minor";
+    NextVersionType["major"] = "major";
+})(NextVersionType || (NextVersionType = {}));
+function get_tags(repository, max_items, next_version_type = NextVersionType.bug) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield (0, node_fetch_1.default)(`https://hub.docker.com/v2/repositories/${repository}/tags?page_size=${max_items}`);
         if (!response.ok) {
@@ -110,50 +117,85 @@ function get_tags(repository, max_items) {
             }
             return `v${major}`;
         };
-        const setResultLastVersion = (major, minor, bug) => {
+        const set_current_version = (major, minor, bug) => {
+            // set current
             if (!result.current_version) {
                 result.current_version = {
                     major,
-                    major_name: buildVersion(major),
+                    major_name: '',
                     minor,
-                    minor_name: buildVersion(major, minor),
+                    minor_name: '',
                     bug,
-                    bug_name: buildVersion(major, minor, bug)
+                    bug_name: ''
                 };
             }
             else {
                 result.current_version.major = major;
-                result.current_version.major_name = buildVersion(major);
                 result.current_version.minor = minor;
-                result.current_version.minor_name = buildVersion(major, minor);
                 result.current_version.bug = bug;
-                result.current_version.bug_name = buildVersion(major, minor, bug);
             }
         };
-        const checkResultLastVersion = (major, minor, bug) => {
+        const set_next_version = (next_type) => {
+            // set next
+            result.next_version = {
+                major: result.current_version.major,
+                major_name: '',
+                minor: result.current_version.minor,
+                minor_name: '',
+                bug: result.current_version.bug,
+                bug_name: ''
+            };
+            switch (next_type) {
+                case NextVersionType.bug:
+                    result.next_version.bug++;
+                    break;
+                case NextVersionType.minor:
+                    result.next_version.bug = 0;
+                    result.next_version.minor++;
+                    break;
+                case NextVersionType.major:
+                    result.next_version.bug = 0;
+                    result.next_version.minor = 0;
+                    result.next_version.major++;
+                    break;
+                default:
+                    break;
+            }
+        };
+        const set_version_names = () => {
+            // current version
+            result.current_version.bug_name = buildVersion(result.current_version.major, result.current_version.minor, result.current_version.bug);
+            result.current_version.minor_name = buildVersion(result.current_version.major, result.current_version.minor);
+            result.current_version.major_name = buildVersion(result.current_version.major);
+            // next version
+            result.next_version.bug_name = buildVersion(result.next_version.major, result.next_version.minor, result.next_version.bug);
+            result.next_version.minor_name = buildVersion(result.next_version.major, result.next_version.minor);
+            result.next_version.major_name = buildVersion(result.next_version.major);
+        };
+        const check_result_last_version = (major, minor, bug) => {
             if (major < result.current_version.major)
                 return false;
             if (major > result.current_version.major) {
-                setResultLastVersion(major, minor, bug);
+                set_current_version(major, minor, bug);
                 return true;
             }
             // major is equal
             if (minor < result.current_version.minor)
                 return false;
             if (minor > result.current_version.minor) {
-                setResultLastVersion(major, minor, bug);
+                set_current_version(major, minor, bug);
                 return true;
             }
             // minor is equal
             if (bug < result.current_version.bug)
                 return false;
             if (bug > result.current_version.bug) {
-                setResultLastVersion(major, minor, bug);
+                set_current_version(major, minor, bug);
                 return true;
             }
             return false;
         };
-        setResultLastVersion(1, 0, 0);
+        set_current_version(1, 0, 0);
         for (const item of result.results) {
             const matches = item.name.match('^v([0-9]+).([0-9]+).([0-9]+)$');
             if (!matches)
@@ -161,12 +203,15 @@ function get_tags(repository, max_items) {
             const major = parseInt(matches[1]);
             const minor = parseInt(matches[2]);
             const bug = parseInt(matches[3]);
-            checkResultLastVersion(major, minor, bug);
+            check_result_last_version(major, minor, bug);
         }
+        set_next_version(next_version_type);
+        set_version_names();
         return {
             count: result.count,
             results: result.results,
-            current_version: result.current_version
+            current_version: result.current_version,
+            next_version: result.next_version
         };
     });
 }
