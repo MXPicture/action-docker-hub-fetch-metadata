@@ -15,9 +15,19 @@ interface ResultObject {
   tag_last_pushed: string
 }
 
+interface VersionObject {
+  major: number
+  major_name: string
+  minor: number
+  minor_name: string
+  bug: number
+  bug_name: string
+}
+
 interface MetadataObject {
   count: number
   results: ResultObject[]
+  currentVersion: VersionObject
 }
 
 export async function get_tags(
@@ -34,5 +44,88 @@ export async function get_tags(
     )
   }
 
-  return (await response.json()) as MetadataObject
+  const result = (await response.json()) as MetadataObject
+
+  const buildVersion = (
+    major: number,
+    minor: number | undefined = undefined,
+    bug: number | undefined = undefined
+  ): string => {
+    if (bug) {
+      return `v${major}.${minor}.${bug}`
+    }
+    if (minor) {
+      return `v${major}.${minor}`
+    }
+    return `v${major}`
+  }
+
+  const setResultLastVersion = (
+    major: number,
+    minor: number,
+    bug: number
+  ): void => {
+    if (!result.currentVersion) {
+      result.currentVersion = {
+        major,
+        major_name: buildVersion(major),
+        minor,
+        minor_name: buildVersion(minor),
+        bug,
+        bug_name: buildVersion(major, minor, bug)
+      }
+    } else {
+      result.currentVersion.major = major
+      result.currentVersion.major_name = buildVersion(major)
+      result.currentVersion.minor = minor
+      result.currentVersion.minor_name = buildVersion(major, minor)
+      result.currentVersion.bug = bug
+      result.currentVersion.bug_name = buildVersion(major, minor, bug)
+    }
+  }
+
+  const checkResultLastVersion = (
+    major: number,
+    minor: number,
+    bug: number
+  ): boolean => {
+    if (major < result.currentVersion.major) return false
+    if (major > result.currentVersion.major) {
+      setResultLastVersion(major, minor, bug)
+      return true
+    }
+
+    // major is equal
+    if (minor < result.currentVersion.minor) return false
+    if (minor > result.currentVersion.minor) {
+      setResultLastVersion(major, minor, bug)
+      return true
+    }
+
+    // minor is equal
+    if (bug < result.currentVersion.bug) return false
+    if (bug > result.currentVersion.bug) {
+      setResultLastVersion(major, minor, bug)
+      return true
+    }
+
+    return false
+  }
+
+  setResultLastVersion(1, 0, 0)
+
+  for (const item of result.results) {
+    const matches = item.name.match('^v([0-9]+).([0-9]+).([0-9]+)$')
+    if (!matches) continue
+    const major = parseInt(matches[1])
+    const minor = parseInt(matches[2])
+    const bug = parseInt(matches[3])
+    checkResultLastVersion(major, minor, bug)
+  }
+
+  return {
+    count: result.count,
+    results: result.results,
+    currentVersion: result.currentVersion
+  }
 }
