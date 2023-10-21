@@ -13,7 +13,7 @@ outputs:
     description: "Docker image tags in JSON format"
   count:
     description: "Tag count"
-  currentVersion:
+  current_version:
     description: "Current version"
 runs:
   using: "node20"

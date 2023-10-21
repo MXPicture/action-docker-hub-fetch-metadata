@@ -13,7 +13,7 @@ async function run(): Promise<void> {
     const metadata = await get_tags(repository, max_items)
     core.setOutput('count', metadata.count)
     core.setOutput('results', metadata.results)
-    core.setOutput('currentVersion', metadata.currentVersion)
+    core.setOutput('current_version', metadata.current_version)
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message)
